@@ -3,13 +3,12 @@
 #  - http://docs.aws.amazon.com/AWSECommerceService/latest/DG/ItemLookup.html
 # TODO Parse program/year
 # TODO parse lu http://www.lu.se/lubas/courses
-
-
 # CSV structure - ISBN13, Title, Authors, Courses
 
+require 'rubygems'
+require 'bundler/setup'
 require 'nokogiri'
 require 'open-uri/cached'
-require 'debugger'
 require 'json'
 require 'csv'
 
