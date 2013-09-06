@@ -1,6 +1,3 @@
-courses
-=======
-
 Scrapes all course literature and their respective course on LTH
 
     bundle install
