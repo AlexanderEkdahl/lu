@@ -5,12 +5,15 @@
 # TODO parse lu http://www.lu.se/lubas/courses
 # CSV structure - ISBN13, Title, Authors, Courses
 
+# convert isbn 10 to 13 beforehand?
+
 require 'rubygems'
 require 'bundler/setup'
 require 'nokogiri'
 require 'open-uri/cached'
 require 'json'
 require 'csv'
+require 'debugger'
 
 def strip_isbn(isbn)
   isbn.gsub(/[- ]/, '')
@@ -30,7 +33,7 @@ def find_isbn13(book)
 end
 
 def find_authors(book)
-  book['volumeInfo']['authors']
+  Array(book['volumeInfo']['authors'])
 end
 
 def find_title(book)
@@ -55,7 +58,11 @@ if __FILE__ == $0
     isbns = scan(page)
 
     isbns.each do |isbn|
-      books_and_codes[isbn] << "#{code.text} - #{name.text}"
+      if name.text == ""
+        books_and_codes[isbn] << code.text
+      else
+        books_and_codes[isbn] << "#{code.text} - #{name.text}"
+      end
     end
   end
 
@@ -64,7 +71,12 @@ if __FILE__ == $0
 
     if book and (id = find_isbn13(book))
       if id
-        books[id] = [find_title(book), find_authors(book), value]
+        # If book was referenced differently(using isbn 10 or 13) the data won't get properly merged
+        if books.key?(id)
+          books[id][2] << ";#{value}"
+        else
+          books[id] = [find_title(book), find_authors(book).join(';'), value.join(';')]
+        end
       end
     end
   end

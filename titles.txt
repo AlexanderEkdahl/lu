@@ -1,0 +1,30 @@
+Martin, R C: Agile Software Development - Principles, Patterns, and Practices. Prentice Hall 2011. ISBN: 0132760584.
+authors: "Martin R C", title: "Agile Software Development - Principles, Patterns, and Practices", isbn: "0132760584"
+Parse authors untill ':'. Parse title untill '.'. scan for isbn
+
+Andersson, L: UML - Syntax. Datavetenskap, 2010.
+Parse authors untill ':'. Parse title untill '.'. NO MATCH
+
+Jonas Skeppstedt and Christian Söderberg: Writing Efficient C Code: A Thorough Introduction for Java Programmers. Skeppberg, 2011, ISBN: 9197794007.
+authors: "Jonas Skeppstedt Christian Söderberg"
+Parse authors untill ':'. Parse title untill '.'. scan for isbn
+
+Carlsson, Johansson: Modern elektronisk mätteknik. Liber. Labkompendium.
+Parse authors untill ':'. Parse title untill '.'. scan for isbn
+
+Geodetisk och fotogrammetrisk mätnings- och beräkningsteknik. KTH/LU/LMV 2011.
+No author. Title untill '.'. NO MATCH
+
+Harrie, L. (red.): Geografisk informationsbehandling – teori, metoder och tillämpningar, 6 upplagan. Studentlitteratur, 2013.
+Parse authors untill ':'. Parse title untill '.'.
+
+Glasson, J, Therivel, R, Chadwick A: Introduction to environmental impact assessment. Routledge, 2012. (senaste upplagan).
+NO MATCH
+
+Kjellander C & Hedlund A: MKB – introduktion till miljökonsekvensbeskrivning. Studentlitteratur , 2007.
+
+Wallentinus, H-G (red.): MKB. perspektiv på miljökonsekvensbeskrivning. Studentlitteratur , 2007.
+Stenström, S: Teknik för elproduktion.
+Stenström, S, Wimmerstedt, R.: Värmepumpar, Teori, teknik och tillämpningar.
+Hillier F. S. and G. J. Lieberman, Introduction to Operations Research, 8th edition, McGraw-Hill. 2005. Kursanpassad version.
+Laguna M. and J. Marklund, Business Process Modeling, Simulation and Design, Kurskompendium.
