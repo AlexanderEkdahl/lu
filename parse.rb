@@ -40,8 +40,14 @@ def find_title(book)
   book['volumeInfo']['title']
 end
 
+def find_thumbnail(book)
+  a = book['volumeInfo']['imageLinks']
+  a['thumbnail'] if a != nil
+end
+
 def google_books_api(isbn)
   books = JSON.parse(open("https://www.googleapis.com/books/v1/volumes?q=isbn:#{isbn}&key=AIzaSyDdnBhErY3yMQ2UB6OBz6AIRlp6vrTlYsM").read)
+  puts "Downloading https://www.googleapis.com/books/v1/volumes?q=isbn:#{isbn}"
   books['items'] ? books['items'].first : nil
 end
 
@@ -55,6 +61,7 @@ if __FILE__ == $0
   rows.each do |row|
     code, link, _, name = row.css('td')
     page  = open("http://kurser.lth.se#{link.child[:href]}").read
+    puts "Downloading http://kurser.lth.se#{link.child[:href]}"
     isbns = scan(page)
 
     isbns.each do |isbn|
@@ -75,7 +82,7 @@ if __FILE__ == $0
         if books.key?(id)
           books[id][2] << ";#{value}"
         else
-          books[id] = [find_title(book), find_authors(book).join(';'), value.join(';')]
+          books[id] = [find_title(book), find_authors(book).join(';'), value.join(';'), find_thumbnail(book)]
         end
       end
     end
