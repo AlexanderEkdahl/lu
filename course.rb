@@ -2,16 +2,12 @@ require 'rubygems'
 require 'bundler/setup'
 require 'nokogiri'
 require 'open-uri/cached'
-require 'csv'
 require 'debugger'
-
-class Array
-  def safe_join
-    self.map { |x| x.gsub(';', ',') }.join(';') if self.length > 0
-  end
-end
+require 'json'
 
 class Course
+  PROGRAMS = %w{A B BI BME C D E F I K L M MD N Pi V W}
+
   def initialize(url)
     @doc = Nokogiri::HTML(open(url))
   end
@@ -21,7 +17,6 @@ class Course
   end
 
   def literature
-    # Split ' eller '? - only if multiple books were found
     @doc.xpath("//h2[contains(.,'Kurslitteratur')]/following::ul/li/text()").map(&:text)
   end
 
@@ -31,8 +26,8 @@ class Course
 
   def program
     (obligatory + optional).map do |x|
-      x.strip.gsub(/-.*/, '')
-    end.uniq.safe_join
+      x.scan(%r{\b(?:#{PROGRAMS.join('|')})\d}).first
+    end.compact.uniq
   end
 
   def obligatory
@@ -46,13 +41,19 @@ end
 
 if __FILE__ == $0
   courses = Nokogiri::HTML(open("http://kurser.lth.se/kursplaner/13_14/"))
+  json    = {}
   rows    = courses.css('.courselist table tr')
 
-  CSV.open("courses.csv", "wb") do |csv|
-    rows.each do |row|
-      _, link, _, _ = row.css('td')
-      course = Course.new("http://kurser.lth.se#{link.child[:href]}")
-      csv << [course.code, course.name, course.program]
-    end
+  rows.each do |row|
+    course = Course.new("http://kurser.lth.se#{row.css('td')[1].child[:href]}")
+    json[course.code] = {
+      name:       course.name,
+      program:    course.program,
+      literature: course.literature
+    }
+  end
+
+  File.open('courses.json', 'w') do |file|
+    file.write(JSON.pretty_generate(json))
   end
 end
